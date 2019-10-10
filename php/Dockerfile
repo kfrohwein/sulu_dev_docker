@@ -32,7 +32,7 @@ RUN pecl install \
 	&& apk del build-dependencies
 
 RUN if [ ! -z ${USER_ID} ]; then addgroup -g ${USER_ID} sulu; fi \
-	&& if [ ! -z ${USER_ID} ]; then adduser -u ${USER_ID} -h /var/www/project -H -G sulu -s /sbin/nologin -D sulu; fi
+	&& if [ ! -z ${USER_ID} ]; then adduser -u ${USER_ID} -H -G sulu -s /sbin/nologin -D sulu; fi
 
 
 USER sulu

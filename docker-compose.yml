@@ -2,6 +2,7 @@ version: '3'
 services:
   nginx:
     image: nginx:alpine
+    container_name: sulu_nginx
     ports:
       - 8080:80
     volumes:
@@ -15,16 +16,15 @@ services:
       context: php/.
       args:
         USER_ID: 1000
+    container_name: sulu_php
     volumes:
       - ./sulu:/var/www/project:cached
     environment:
-      - DATABASE_URL=pdo-pgsql://test:test123@sulu_db_1/sulu?charset=UTF-8
+      - DATABASE_URL=pdo-pgsql://test:test123@sulu_db/sulu?charset=UTF-8
 
   db:
     image: postgres:12-alpine
-    environment:
-    environment:
-      - POSTGRES_USER=test
-      - POSTGRES_PASSWORD=test123
-      - POSTGRES_DB=sulu
+    container_name: sulu_db
+    env_file:
+      - db/settings.env
 
