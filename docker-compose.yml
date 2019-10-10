@@ -1,0 +1,30 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./sulu/:/var/www/project
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: php/.
+      args:
+        USER_ID: 1000
+    volumes:
+      - ./sulu:/var/www/project:cached
+    environment:
+      - DATABASE_URL=pdo-pgsql://test:test123@sulu_db_1/sulu?charset=UTF-8
+
+  db:
+    image: postgres:12-alpine
+    environment:
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test123
+      - POSTGRES_DB=sulu
+
